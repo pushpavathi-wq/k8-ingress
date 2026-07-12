@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: app1
-        image: arun596/app1:1.0.0
+        image: pushpa4/app1:1.0.0
         ports:
         - containerPort: 80
 ---
@@ -32,27 +32,27 @@ spec:
   - protocol: TCP
     port: 80 # service port
     targetPort: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: app1
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:515966500898:certificate/bbb5fe6a-da4b-4bf4-b965-eb71357248c2
-    alb.ingress.kubernetes.io/group.name: bmo-project
-spec:
-  ingressClassName: alb
-  rules:
-  - host: "app1.devopslearning.fun"
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: app1
-            port:
-              number: 80
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: app1
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:515966500898:certificate/bbb5fe6a-da4b-4bf4-b965-eb71357248c2
+#     alb.ingress.kubernetes.io/group.name: bmo-project
+# spec:
+#   ingressClassName: alb
+#   rules:
+#   - host: "app1.devopslearning.fun"
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: "/"
+#         backend:
+#           service:
+#             name: app1
+#             port:
+#               number: 80
