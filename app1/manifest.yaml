@@ -41,12 +41,13 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing  # we need public loadbalancer
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: 
-    alb.ingress.kubernetes.io/group.name: bmo-project
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:491085429222:certificate/0e35c539-7beb-4585-a06f-459a853fe840
+    # create certificate as we are exposing in frontend,outside world
+    alb.ingress.kubernetes.io/group.name: retail-project
 spec:
   ingressClassName: alb
   rules:
-  - host: "app1.devopslearning.fun"
+  - host: "app1.daws82.fun"
     http:
       paths:
       - pathType: Prefix
@@ -56,3 +57,4 @@ spec:
             name: app1
             port:
               number: 80
+

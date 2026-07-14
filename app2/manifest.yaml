@@ -1,33 +1,61 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: app2
-
-  labels: 
-    name: app2
-
-
-spec: 
+  # labels of deployment resource
+  labels:
+    app: app2
+spec:
   replicas: 2
-  selectors: 
-    matchLabels: 
-      name: app2
-
-  template: 
-    metadata: 
-      labels: 
-        name: app2 
-
-    spec: 
-      containers: 
-      - name: app2 
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: app2
         image: pushpa4/app2:1.0.0
-        ports: 
-        - containerPort: 80 
-
-
----        
-
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: app2
+spec:
+  selector: # labels are used as selectors
+    app: app2
+  ports:
+  - protocol: TCP
+    port: 80 # service port
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app2
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:491085429222:certificate/0e35c539-7beb-4585-a06f-459a853fe840
+    alb.ingress.kubernetes.io/group.name: retail-project
+spec:
+  ingressClassName: alb
+  rules:
+  - host: "app2.daws82s.fun"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app2
+            port:
+              number: 80
 
 
 
